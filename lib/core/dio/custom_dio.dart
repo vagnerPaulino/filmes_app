@@ -1,6 +1,8 @@
 
 import 'package:dio/dio.dart';
 import 'package:dio/native_imp.dart';
+import 'package:filmes_app/core/dio/interceptors/auth_interceptor.dart';
+import 'package:filmes_app/core/dio/interceptors/time_execution_interceptor.dart';
 
 class CustomDio extends DioForNative {
 
@@ -10,6 +12,11 @@ class CustomDio extends DioForNative {
     receiveTimeout: 60000,
   );
 
-  CustomDio() : super(_baseOptions);
+  CustomDio() : super(_baseOptions){
+    interceptors.addAll([
+      TimeExecutionInterceptor(),
+      AuthInterceptor(),
+    ]);
+  }
   
 }
