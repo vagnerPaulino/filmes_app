@@ -1,25 +1,30 @@
 
 import 'package:dio/dio.dart';
+import 'package:filmes_app/core/dio/custom_dio.dart';
 import 'package:filmes_app/core/exceptions/repository_exception.dart';
 import 'package:filmes_app/models/movies.dart';
 import 'package:filmes_app/repositories/movies/movies_repository.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class MoviesRepositoryImpl implements MoviesRepository {
+class MoviesRepositoryCustomDioImpl implements MoviesRepository {
   @override
   Future<Movies> findPopularMovies() async {
 
     try {
       final apiKey = env['apiKey'] ?? '';
       
-      final dio = Dio();
+      final dio = CustomDio();
+      final timer = DateTime.now();
       final result = await dio.get(
-        'https://api.themoviedb.org/3/movie/popular',
+        '/movie/popular',
         queryParameters: {
           'api_key': apiKey,
           'language': 'pt-BR'
         }
-      );      
+      );
+      final totalExecution = DateTime.now().difference(timer);
+      print('Levou ${totalExecution.inMilliseconds} inMilliseconds');
+
       return Movies.fromMap(result.data);
     } on DioError catch (e, s) {
       print(e);
@@ -33,14 +38,18 @@ class MoviesRepositoryImpl implements MoviesRepository {
     try {
       final apiKey = env['apiKey'] ?? '';
       
-      final dio = Dio();
+      final dio = CustomDio();
+      final timer = DateTime.now();
       final result = await dio.get(
-        'https://api.themoviedb.org/3/movie/top_rated',
+        '/movie/top_rated',
         queryParameters: {
           'api_key': apiKey,
           'language': 'pt-BR'
         }
-      );      
+      );
+      final totalExecution = DateTime.now().difference(timer);
+      print('Levou ${totalExecution.inMilliseconds} inMilliseconds');
+            
       return Movies.fromMap(result.data);
     } on DioError catch (e, s) {
       print(e);

@@ -16,15 +16,15 @@ class Movies {
   Map<String, dynamic> toMap() {
     return {
       'page': page,
-      'totalPages': totalPages,
+      'total_pages': totalPages,
       'results': results.map((x) => x.toMap()).toList(),
     };
   }
 
   factory Movies.fromMap(Map<String, dynamic> map) {
     return Movies(
-      page: map['page'],
-      totalPages: map['totalPages'],
+      page: map['page'] ?? 0,
+      totalPages: map['total_pages'] ?? 0,
       results: List<Movie>.from(map['results'].map((x) => Movie.fromMap(x))),
     );
   }
